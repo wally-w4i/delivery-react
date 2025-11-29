@@ -1,0 +1,5 @@
+[
+    { "id": 1, "description": "Client 1", "address": "Belgrano 1234" },
+    { "id": 2, "description": "Client 2", "address": "Pringles 1234" }
+]
+
