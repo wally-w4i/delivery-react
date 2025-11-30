@@ -1,9 +1,14 @@
 const API_URL = "http://localhost:8080/api/clients";
 
+export interface GpsPosition {
+  latitude: number;
+  longitude: number;
+}
 export interface Client {
   id: number;
   description: string;
   address: string;
+  gpsPosition?: GpsPosition;
 }
 
 export const getClients = async (): Promise<Client[]> => {
@@ -14,7 +19,9 @@ export const getClients = async (): Promise<Client[]> => {
   return await request.json();
 };
 
-export const createClient = async (client: Omit<Client, 'id'>): Promise<Client> => {
+export const createClient = async (
+  client: Omit<Client, "id">
+): Promise<Client> => {
   const request = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -28,7 +35,10 @@ export const createClient = async (client: Omit<Client, 'id'>): Promise<Client> 
   return await request.json();
 };
 
-export const updateClient = async (id: number, client: Omit<Client, 'id'>): Promise<Client> => {
+export const updateClient = async (
+  id: number,
+  client: Omit<Client, "id">
+): Promise<Client> => {
   const request = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: {

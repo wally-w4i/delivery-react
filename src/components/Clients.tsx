@@ -191,8 +191,14 @@ export default function Clients() {
               key={c.id}
               className="mb-2 p-3 bg-zinc-800 border border-zinc-700 rounded-md flex justify-between items-center"
             >
-              <span>
+              <span className="flex">
                 {c.description} : {c.address}
+                {c.gpsPosition && (
+                  <div className="flex ml-10 gap-3">
+                    <div>LAT: {c.gpsPosition.latitude}</div>
+                    <div>LON: {c.gpsPosition.longitude}</div>
+                  </div>
+                )}
               </span>
               <div className="flex space-x-2">
                 <button
