@@ -27,7 +27,7 @@ export default function Clients() {
   }, []);
 
   return (
-    <div>
+    <div className="flex-auto min-h-screen bg-zinc-900 text-white p-6">
       <ul>
         {clients.map((c) => {
           return (
