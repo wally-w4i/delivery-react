@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-
-interface Client {
-  id: number;
-  description: string;
-  address: string;
-}
+import {
+  getClients,
+  createClient,
+  updateClient,
+  deleteClient,
+  Client,
+} from "../services/api.services";
 
 export default function Clients() {
   const [clients, setClients] = useState<Client[]>([]);
@@ -18,15 +19,11 @@ export default function Clients() {
     setIsLoading(true);
     setError(null);
     try {
-      const request = await fetch("http://localhost:8080/api/clients");
-      if (!request.ok) {
-        throw new Error("Failed to fetch clients");
-      }
-      const response = await request.json();
+      const response = await getClients();
       setClients(response);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError(err.message || "Failed to fetch clients");
+      setError((err as Error).message || "Failed to fetch clients");
     } finally {
       setIsLoading(false);
     }
@@ -50,20 +47,10 @@ export default function Clients() {
           description: newClientDescription,
           address: newClientAddress,
         };
-        const request = await fetch(
-          `http://localhost:8080/api/clients/${editingClientId}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedClientData),
-          }
+        const responseData = await updateClient(
+          editingClientId,
+          updatedClientData
         );
-        if (!request.ok) {
-          throw new Error("Failed to update client");
-        }
-        const responseData = await request.json(); // Assuming backend returns the updated client
         setClients((prevClients) =>
           prevClients.map((client) =>
             client.id === editingClientId ? responseData : client
@@ -76,24 +63,14 @@ export default function Clients() {
           description: newClientDescription,
           address: newClientAddress,
         };
-        const request = await fetch("http://localhost:8080/api/clients", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newClientData),
-        });
-        if (!request.ok) {
-          throw new Error("Failed to add new client");
-        }
-        const addedClient = await request.json(); // Assuming backend returns the new client with ID
+        const addedClient = await createClient(newClientData);
         setClients((prevClients) => [...prevClients, addedClient]);
       }
       setNewClientDescription("");
       setNewClientAddress("");
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError(err.message || "Failed to save client");
+      setError((err as Error).message || "Failed to save client");
     } finally {
       setIsLoading(false);
     }
@@ -103,18 +80,13 @@ export default function Clients() {
     setIsLoading(true);
     setError(null);
     try {
-      const request = await fetch(`http://localhost:8080/api/clients/${id}`, {
-        method: "DELETE",
-      });
-      if (!request.ok) {
-        throw new Error("Failed to delete client");
-      }
+      await deleteClient(id);
       setClients((prevClients) =>
         prevClients.filter((client) => client.id !== id)
       );
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError(err.message || "Failed to delete client");
+      setError((err as Error).message || "Failed to delete client");
     } finally {
       setIsLoading(false);
     }
