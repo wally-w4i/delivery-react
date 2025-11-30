@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
+import type { Client } from "../services/api.services";
 import {
   getClients,
   createClient,
   updateClient,
   deleteClient,
-  Client,
 } from "../services/api.services";
+import AddClientDialog from "./AddClientDialog";
 
 export default function Clients() {
   const [clients, setClients] = useState<Client[]>([]);
-  const [newClientDescription, setNewClientDescription] = useState("");
-  const [newClientAddress, setNewClientAddress] = useState("");
   const [editingClientId, setEditingClientId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchClients = async () => {
     setIsLoading(true);
@@ -33,41 +33,29 @@ export default function Clients() {
     fetchClients();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newClientDescription || !newClientAddress) return;
-
+  const handleSubmit = async (clientData: {
+    description: string;
+    address: string;
+  }) => {
     setIsLoading(true);
     setError(null);
 
     try {
       if (editingClientId !== null) {
         // PUT request (Update existing client)
-        const updatedClientData = {
-          description: newClientDescription,
-          address: newClientAddress,
-        };
-        const responseData = await updateClient(
-          editingClientId,
-          updatedClientData
-        );
+        const responseData = await updateClient(editingClientId, clientData);
         setClients((prevClients) =>
           prevClients.map((client) =>
             client.id === editingClientId ? responseData : client
           )
         );
-        setEditingClientId(null);
       } else {
         // POST request (Add new client)
-        const newClientData = {
-          description: newClientDescription,
-          address: newClientAddress,
-        };
-        const addedClient = await createClient(newClientData);
+        const addedClient = await createClient(clientData);
         setClients((prevClients) => [...prevClients, addedClient]);
       }
-      setNewClientDescription("");
-      setNewClientAddress("");
+      setIsModalOpen(false);
+      setEditingClientId(null);
     } catch (err) {
       console.error(err);
       setError((err as Error).message || "Failed to save client");
@@ -94,90 +82,45 @@ export default function Clients() {
 
   const handleEdit = (client: Client) => {
     setEditingClientId(client.id);
-    setNewClientDescription(client.description);
-    setNewClientAddress(client.address);
+    setIsModalOpen(true);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancel = () => {
     setEditingClientId(null);
-    setNewClientDescription("");
-    setNewClientAddress("");
+    setIsModalOpen(false);
   };
+
+  const handleAddNew = () => {
+    setEditingClientId(null);
+    setIsModalOpen(true);
+  };
+
+  const editingClient =
+    editingClientId !== null
+      ? clients.find((c) => c.id === editingClientId)
+      : null;
 
   return (
     <div className="flex-auto min-h-screen bg-zinc-900 text-white p-6">
       <h1 className="text-2xl font-bold mb-4">Clients</h1>
 
-      <form
+      <div className="mb-4">
+        <button
+          onClick={handleAddNew}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-medium"
+        >
+          Add New Client
+        </button>
+      </div>
+
+      <AddClientDialog
+        isOpen={isModalOpen}
+        onClose={handleCancel}
         onSubmit={handleSubmit}
-        className="mb-8 p-4 border border-zinc-700 rounded-lg"
-      >
-        <h2 className="text-xl font-semibold mb-2">
-          {editingClientId !== null ? "Edit Client" : "Add New Client"}
-        </h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <div className="mb-4">
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-zinc-400"
-          >
-            Description
-          </label>
-          <input
-            type="text"
-            id="description"
-            value={newClientDescription}
-            onChange={(e) => setNewClientDescription(e.target.value)}
-            className="mt-1 block w-full p-2 bg-zinc-800 border border-zinc-700 rounded-md text-white"
-            required
-            disabled={isLoading}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="address"
-            className="block text-sm font-medium text-zinc-400"
-          >
-            Address
-          </label>
-          <input
-            type="text"
-            id="address"
-            value={newClientAddress}
-            onChange={(e) => setNewClientAddress(e.target.value)}
-            className="mt-1 block w-full p-2 bg-zinc-800 border border-zinc-700 rounded-md text-white"
-            required
-            disabled={isLoading}
-          />
-        </div>
-        <div className="flex space-x-2">
-          <button
-            type="submit"
-            className={`px-4 py-2 \${
-              isLoading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
-            } rounded-md text-white font-medium`}
-            disabled={isLoading}
-          >
-            {isLoading
-              ? "Saving..."
-              : editingClientId !== null
-              ? "Update Client"
-              : "Add Client"}
-          </button>
-          {editingClientId !== null && (
-            <button
-              type="button"
-              onClick={handleCancelEdit}
-              className={`px-4 py-2 \${
-                isLoading ? "bg-gray-400" : "bg-gray-600 hover:bg-gray-700"
-              } rounded-md text-white font-medium`}
-              disabled={isLoading}
-            >
-              Cancel Edit
-            </button>
-          )}
-        </div>
-      </form>
+        client={editingClient}
+        isLoading={isLoading}
+        error={error}
+      />
 
       <div>
         <h2 className="text-xl font-semibold mb-2">Existing Clients</h2>
@@ -203,8 +146,10 @@ export default function Clients() {
               <div className="flex space-x-2">
                 <button
                   onClick={() => handleEdit(c)}
-                  className={`px-3 py-1 \${
-                    isLoading ? "bg-yellow-400" : "bg-yellow-600 hover:bg-yellow-700"
+                  className={`px-3 py-1 ${
+                    isLoading
+                      ? "bg-yellow-400"
+                      : "bg-yellow-600 hover:bg-yellow-700"
                   } rounded-md text-white text-sm`}
                   disabled={isLoading}
                 >
@@ -212,7 +157,7 @@ export default function Clients() {
                 </button>
                 <button
                   onClick={() => handleDelete(c.id)}
-                  className={`px-3 py-1 \${
+                  className={`px-3 py-1 ${
                     isLoading ? "bg-red-400" : "bg-red-600 hover:bg-red-700"
                   } rounded-md text-white text-sm`}
                   disabled={isLoading}
