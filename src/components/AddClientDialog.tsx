@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import type { Client } from "../services/api.services";
+import type { Client, GpsPosition } from "../services/api.services";
 
 interface AddClientDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (client: { description: string; address: string }) => void;
+  onSubmit: (client: {
+    description: string;
+    address: string;
+    gpsPosition: GpsPosition;
+  }) => void;
   client: Partial<Client> | null | undefined;
   isLoading: boolean;
   error: string | null;
@@ -20,20 +24,31 @@ export default function AddClientDialog({
 }: AddClientDialogProps) {
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
 
   useEffect(() => {
     if (client) {
       setDescription(client.description || "");
       setAddress(client.address || "");
+      setLatitude(client.gpsPosition?.latitude || 0);
+      setLongitude(client.gpsPosition?.longitude || 0);
     } else {
       setDescription("");
       setAddress("");
+      setLatitude(0);
+      setLongitude(0);
     }
   }, [client]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ description, address });
+    const clientData = {
+      description,
+      address,
+      gpsPosition: { latitude, longitude },
+    };
+    onSubmit(clientData);
   };
 
   if (!isOpen) {
@@ -81,6 +96,42 @@ export default function AddClientDialog({
               required
               disabled={isLoading}
             />
+          </div>
+          <div className="flex gap-5">
+            <div className="mb-4">
+              <label
+                htmlFor="latitude"
+                className="block text-sm font-medium text-zinc-400"
+              >
+                Latitude
+              </label>
+              <input
+                type="number"
+                step="0.00000000000000001"
+                id="latitude"
+                value={latitude}
+                onChange={(e) => setLatitude(parseFloat(e.target.value))}
+                className="mt-1 block w-full p-2 bg-zinc-700 border border-zinc-600 rounded-md text-white"
+                disabled={isLoading}
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="longitude"
+                className="block text-sm font-medium text-zinc-400"
+              >
+                Longitude
+              </label>
+              <input
+                type="number"
+                step="0.00000000000000001"
+                id="longitude"
+                value={longitude}
+                onChange={(e) => setLongitude(parseFloat(e.target.value))}
+                className="mt-1 block w-full p-2 bg-zinc-700 border border-zinc-600 rounded-md text-white"
+                disabled={isLoading}
+              />
+            </div>
           </div>
           <div className="flex justify-end space-x-2">
             <button

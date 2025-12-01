@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Client } from "../services/api.services";
+import type { Client, GpsPosition } from "../services/api.services";
 import {
   getClients,
   createClient,
@@ -36,6 +36,7 @@ export default function Clients() {
   const handleSubmit = async (clientData: {
     description: string;
     address: string;
+    gpsPositione: GpsPosition;
   }) => {
     setIsLoading(true);
     setError(null);
