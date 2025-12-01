@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Client, GpsPosition } from "../services/api.services";
 
 interface AddClientDialogProps {
@@ -22,24 +22,12 @@ export default function AddClientDialog({
   isLoading,
   error,
 }: AddClientDialogProps) {
-  const [description, setDescription] = useState("");
-  const [address, setAddress] = useState("");
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-
-  useEffect(() => {
-    if (client) {
-      setDescription(client.description || "");
-      setAddress(client.address || "");
-      setLatitude(client.gpsPosition?.latitude || 0);
-      setLongitude(client.gpsPosition?.longitude || 0);
-    } else {
-      setDescription("");
-      setAddress("");
-      setLatitude(0);
-      setLongitude(0);
-    }
-  }, [client]);
+  const [description, setDescription] = useState(client?.description || "");
+  const [address, setAddress] = useState(client?.address || "");
+  const [latitude, setLatitude] = useState(client?.gpsPosition?.latitude || 0);
+  const [longitude, setLongitude] = useState(
+    client?.gpsPosition?.longitude || 0
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
