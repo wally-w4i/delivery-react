@@ -115,6 +115,7 @@ export default function Clients() {
       </div>
 
       <AddClientDialog
+        key={editingClientId || "new"}
         isOpen={isModalOpen}
         onClose={handleCancel}
         onSubmit={handleSubmit}
