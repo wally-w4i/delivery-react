@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, type ReactNode } from "react";
 import logo from "../assets/react.svg";
 
 // icons
@@ -12,14 +12,19 @@ import { CiDeliveryTruck } from "react-icons/ci";
 
 type View = "Clients" | "Deliveries" | "Setting" | "Log" | "Report";
 
-const menuItems = [
+interface MenuItem {
+  icons: ReactNode;
+  label: View;
+}
+
+const menuItems: MenuItem[] = [
   {
     icons: <IoIosPeople size={30} />,
     label: "Clients",
   },
   {
     icons: <CiDeliveryTruck size={30} />,
-    label: "Delivery",
+    label: "Deliveries",
   },
   {
     icons: <CiSettings size={30} />,

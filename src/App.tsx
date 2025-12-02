@@ -1,17 +1,17 @@
 import Clients from "./components/clients/Clients";
 import Log from "./components/Log";
-import Delivery from "./components/deliveries/Delivery";
+import Deliveries from "./components/deliveries/Deliveries";
 import Report from "./components/Report";
 import Settings from "./components/Settings";
 import Sidebar from "./components/Sidebar";
 import Login from "./components/auth/Login";
 import { useState, useEffect } from "react";
 
-type View = "Clients" | "Delivery" | "Setting" | "Log" | "Report";
+type View = "Clients" | "Deliveries" | "Setting" | "Log" | "Report";
 
 const components: Record<View, React.ComponentType> = {
   Clients: Clients,
-  Delivery: Delivery,
+  Deliveries: Deliveries,
   Setting: Settings,
   Log: Log,
   Report: Report,
