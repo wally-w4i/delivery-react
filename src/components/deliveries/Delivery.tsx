@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import type { Delivery, Client } from "../services/api.services";
+import type { Delivery, Client } from "../../services/api.services";
 import {
   getDeliveries,
   createDelivery,
   getClients,
-} from "../services/api.services";
+} from "../../services/api.services";
 import AddDeliveryDialog from "./AddDeliveryDialog";
 
 export default function Delivery() {

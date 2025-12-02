@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { Client, GpsPosition } from "../services/api.services";
+import type { Client, GpsPosition } from "../../services/api.services";
 import { FaLocationCrosshairs } from "react-icons/fa6";
-import MapModal from "./MapModal";
+import MapModal from "../MapModal";
 
 interface AddClientDialogProps {
   isOpen: boolean;

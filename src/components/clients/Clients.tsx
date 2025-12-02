@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import type { Client, GpsPosition } from "../services/api.services";
+import type { Client, GpsPosition } from "../../services/api.services";
 import {
   getClients,
   createClient,
   updateClient,
   deleteClient,
-} from "../services/api.services";
+} from "../../services/api.services";
 import AddClientDialog from "./AddClientDialog";
 
 export default function Clients() {
