@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import type { Client, Delivery } from "../services/api.services";
-import { getClients } from "../services/api.services";
+import type { Client, Delivery } from "../../services/api.services";
+import { getClients } from "../../services/api.services";
 
 interface AddDeliveryDialogProps {
   isOpen: boolean;
