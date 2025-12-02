@@ -6,11 +6,11 @@ import { MdMenuOpen } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
 import { IoLogoBuffer } from "react-icons/io";
-import { CiSettings } from "react-icons/ci";
+import { CiSettings, CiLogout } from "react-icons/ci";
 import { IoIosPeople } from "react-icons/io";
 import { CiDeliveryTruck } from "react-icons/ci";
 
-type View = "Vocabulary" | "Reading" | "Setting" | "Log" | "Report";
+type View = "Clients" | "Deliveries" | "Setting" | "Log" | "Report";
 
 const menuItems = [
   {
@@ -37,9 +37,10 @@ const menuItems = [
 
 type SidebarProps = {
   changeView: (view: View) => void;
+  onLogout: () => void;
 };
 
-export default function Sidebar({ changeView }: SidebarProps) {
+export default function Sidebar({ changeView, onLogout }: SidebarProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -106,6 +107,13 @@ export default function Sidebar({ changeView }: SidebarProps) {
           } duration-500 overflow-hidden`}
         >
           <p>Walter</p>
+        </div>
+        <div
+          className={`${
+            !open && "w-0 translate-x-24"
+          } duration-500 overflow-hidden`}
+        >
+          <CiLogout size={30} className="cursor-pointer" onClick={onLogout} />
         </div>
       </div>
     </nav>
