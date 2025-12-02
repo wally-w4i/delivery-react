@@ -104,7 +104,7 @@ export default function Sidebar({ changeView, onLogout }: SidebarProps) {
       {/* footer */}
       <div className="flex items-center gap-2 px-3 py-2">
         <div>
-          <FaUserCircle size={30} />
+          <FaUserCircle size={30} onClick={() => setOpen(!open)} />
         </div>
         <div
           className={`leading-5 ${
