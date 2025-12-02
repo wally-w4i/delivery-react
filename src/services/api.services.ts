@@ -117,3 +117,28 @@ export const deleteClient = async (id: number): Promise<void> => {
     throw new Error("Failed to delete client");
   }
 };
+
+export const registerUser = async (
+  email: string,
+  password: string
+): Promise<void> => {
+  const request = await fetch(`${API_BASE_URL}/users/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username: email, password }),
+  });
+  if (!request.ok) {
+    const contentType = request.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      const errorData = await request.json();
+      throw new Error(errorData.message || "Failed to register user");
+    } else {
+      const errorText = await request.text();
+      throw new Error(
+        errorText || "Failed to register user: Server responded with an error."
+      );
+    }
+  }
+};

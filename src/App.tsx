@@ -5,6 +5,7 @@ import Report from "./components/Report";
 import Settings from "./components/Settings";
 import Sidebar from "./components/Sidebar";
 import Login from "./components/auth/Login";
+import Register from "./components/auth/Register"; // Import the Register component
 import { useState, useEffect } from "react";
 
 type View = "Clients" | "Deliveries" | "Setting" | "Log" | "Report";
@@ -20,6 +21,7 @@ const components: Record<View, React.ComponentType> = {
 function App() {
   const [currentView, setCurrentView] = useState<View>("Clients");
   const [token, setToken] = useState<string | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false); // New state for registration view
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -35,6 +37,7 @@ function App() {
   const handleLogin = (newToken: string) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
+    setIsRegistering(false); // Reset registration state on successful login
   };
 
   const handleLogout = () => {
@@ -42,12 +45,20 @@ function App() {
     setToken(null);
   };
 
+  const toggleRegistering = () => {
+    setIsRegistering((prev) => !prev);
+  };
+
   const CurrentComponent = components[currentView];
 
   return (
     <div className="flex h-full">
       {!token ? (
-        <Login onLogin={handleLogin} />
+        isRegistering ? (
+          <Register onToggleRegistering={toggleRegistering} />
+        ) : (
+          <Login onLogin={handleLogin} onToggleRegistering={toggleRegistering} />
+        )
       ) : (
         <>
           <Sidebar changeView={changeView} onLogout={handleLogout} />

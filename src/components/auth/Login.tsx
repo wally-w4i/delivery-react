@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 interface LoginProps {
   onLogin: (token: string) => void;
+  onToggleRegistering: () => void; // New prop
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
+const Login: React.FC<LoginProps> = ({ onLogin, onToggleRegistering }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -90,6 +91,16 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </button>
           </div>
         </form>
+        <p className="text-center text-sm text-gray-600">
+          Don't have an account?{" "}
+          <button
+            type="button"
+            onClick={onToggleRegistering}
+            className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
+          >
+            Register
+          </button>
+        </p>
       </div>
     </div>
   );
