@@ -36,7 +36,7 @@ export default function Clients() {
   const handleSubmit = async (clientData: {
     description: string;
     address: string;
-    gpsPositione: GpsPosition;
+    gpsPosition: GpsPosition;
   }) => {
     setIsLoading(true);
     setError(null);
