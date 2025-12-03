@@ -30,6 +30,16 @@ The purpose of this project is to provide a comprehensive solution for delivery 
 - Node.js (v18 or higher)
 - bun
 
+### Running the Backend Service
+
+For more information about the backend service, please refer to its GitHub repository: [https://github.com/wally-w4i/delivery-backend](https://github.com/wally-w4i/delivery-backend)
+
+To run the backend service (delivery-backend), use the following Docker command:
+
+```bash
+docker run -p 8080:8080 ghcr.io/wally-w4i/delivery-backend:latest
+```
+
 ### Installation
 
 1.  Clone the repository:
