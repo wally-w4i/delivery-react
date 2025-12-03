@@ -1,73 +1,100 @@
-# React + TypeScript + Vite
+# Delivery React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a web application for managing deliveries, clients, and reports. The application is designed to be used by a delivery company to manage their daily operations.
 
-Currently, two official plugins are available:
+## Purpose
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The purpose of this project is to provide a comprehensive solution for delivery companies to manage their deliveries, clients, and drivers. The application provides a simple and intuitive interface for managing the entire delivery process, from creating a new delivery to tracking the delivery status and generating reports.
 
-## React Compiler
+## Features
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- User authentication (Login/Register)
+- Client management
+- Delivery management
+- Reporting
+- Settings
+- A logging view
+- Map integration for visualizing deliveries and clients.
 
-## Expanding the ESLint configuration
+## Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend:** React, TypeScript, Tailwind CSS
+- **Build Tool:** Vite
+- **Linting:** ESLint
+- **Package Manager:** bun
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js (v18 or higher)
+- bun
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/delivery-react/delivery-react.git
+    ```
+2.  Navigate to the project directory:
+    ```bash
+    cd delivery-react
+    ```
+3.  Install the dependencies:
+    ```bash
+    bun install
+    ```
+
+### Running the Application
+
+To start the development server, run:
+
+```bash
+bun dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The application will be available at `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Building for Production
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To build the application for production, run:
+
+```bash
+bun build
 ```
+
+The production-ready files will be located in the `dist/` directory.
+
+### Linting
+
+To run the linter and check for code quality, run:
+
+```bash
+bun lint
+```
+
+### Previewing the Production Build
+
+To preview the production build locally, run:
+
+```bash
+bun preview
+```
+
+## Contributing
+
+Contributions are welcome! Please follow these steps to contribute:
+
+1.  Fork the repository.
+2.  Create a new branch: `git checkout -b my-new-feature`
+3.  Make your changes and commit them: `git commit -am 'Add some feature'`
+4.  Push to the branch: `git push origin my-new-feature`
+5.  Submit a pull request.
+
+### Reporting Bugs
+
+If you find a bug, please open an issue on GitHub and provide a detailed description of the bug and how to reproduce it.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
