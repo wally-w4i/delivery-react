@@ -1,0 +1,18 @@
+# .dockerignore
+node_modules
+dist
+.git
+.vscode
+.env
+Dockerfile
+docker-compose.yml
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+*.log
+*.map
+.eslintcache
+.web-test-runner.js
+README.md
+LICENSE
